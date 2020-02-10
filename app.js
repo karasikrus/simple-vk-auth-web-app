@@ -4,6 +4,31 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const passport = require('passport');
+const VKontakteStrategy = require('passport-vkontakte').Strategy;
+
+passport.use(new VKontakteStrategy({
+      clientID:     '7315956', // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId'
+      clientSecret: 'VKONTAKTE_APP_SECRET',
+      callbackURL:  "/users",
+    },
+    function(accessToken, refreshToken, params, profile, done) {
+      // console.log(params.email); // getting the email
+      User.findOrCreate({ vkontakteId: profile.id }, function (err, user) {
+        return done(err, user);
+      });
+    }
+));
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
