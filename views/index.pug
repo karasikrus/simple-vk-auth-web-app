@@ -1,5 +1,8 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Ты и твои друзья
+  p Жми кнопку, чтобы вспомнить своих друзей
+  //authorise button
+  - var buttonClass = ['btn', 'btn-lg', 'btn-primary', 'btn-block'];
+  button(class=buttonClass type="submit") авторизоваться
