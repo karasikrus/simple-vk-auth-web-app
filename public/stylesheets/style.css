@@ -8,3 +8,12 @@ body {
 a {
   color: #00B7FF;
 }
+.friends {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+}
+.friends div{
+  margin: 10px;
+}

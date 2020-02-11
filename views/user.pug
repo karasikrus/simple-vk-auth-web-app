@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h1 Ты и твои друзья
+    p= user.name
+    img.profilePhoto(src=user.photoURL alt="Avatar pic")
+    p
+    p
+    section.friends
+        each friend in user.friends
+            div
+                img.profilePhoto(src=friend.photo_100 alt="Friend avatar pic")
+                p= friend.first_name+" "+ friend.last_name
+
