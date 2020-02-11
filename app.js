@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var session = require('express-session')
+var session = require('express-session');
 
 const passport = require('passport');
 const VKontakteStrategy = require('passport-vkontakte').Strategy;
@@ -16,13 +16,8 @@ passport.deserializeUser(function (obj, done) {
     done(null, obj);
 });
 
-passport.use(new VKontakteStrategy({
-        clientID: '7315956', // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId'
-        clientSecret: '7fYF19XiTs4oGoCd1xCv',
-        callbackURL: "/vkcallback",
-        apiVersion: '5.103',
-        profileFields: ['photo_100']
-    },
+const passportConfig = require('./config/passport');
+passport.use(new VKontakteStrategy(passportConfig,
     function verify(accessToken, refreshToken, params, profile, done) {
 
         // asynchronous verification, for effect...
@@ -55,7 +50,11 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({secret: 'anything'}));
+app.use(session({
+    secret: 'anything',
+    resave: false,
+    saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 

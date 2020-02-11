@@ -17,3 +17,12 @@ a {
 .friends div{
   margin: 10px;
 }
+.friends img{
+  border-radius: 50%;
+}
+.userName{
+  margin-bottom: 0;
+}
+.profilePhoto{
+  border-radius: 10%;
+}
