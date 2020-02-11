@@ -7,30 +7,38 @@ var logger = require('morgan');
 const passport = require('passport');
 const VKontakteStrategy = require('passport-vkontakte').Strategy;
 
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
+});
+
 passport.use(new VKontakteStrategy({
       clientID:     '7315956', // VK.com docs call it 'API ID', 'app_id', 'api_id', 'client_id' or 'apiId'
-      clientSecret: 'VKONTAKTE_APP_SECRET',
-      callbackURL:  "/users",
+      clientSecret: '7fYF19XiTs4oGoCd1xCv',
+      callbackURL:  "/vkcallback",
+        apiVersion: '5.103'
     },
-    function(accessToken, refreshToken, params, profile, done) {
-      // console.log(params.email); // getting the email
-      User.findOrCreate({ vkontakteId: profile.id }, function (err, user) {
-        return done(err, user);
-      });
+    function verify(accessToken, refreshToken, params, profile, done) {
+
+        // asynchronous verification, for effect...
+        process.nextTick(function () {
+            console.log(accessToken);
+            let user = {
+                'token': accessToken,
+                'name': profile.displayName,
+                'photoURL': profile.photos[0].value
+            };
+
+            return done(null, user);
+        });
     }
 ));
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -44,8 +52,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
