@@ -9,7 +9,8 @@ a {
   color: #00B7FF;
 }
 .friends {
-  display: flex;
+  display: inline-flex;
+  width: 70%;
   align-items: center;
   justify-content: center;
   margin: 5px;
@@ -19,6 +20,9 @@ a {
 }
 .friends img{
   border-radius: 50%;
+}
+.friend{
+  flex: 1;
 }
 .userName{
   margin-bottom: 0;

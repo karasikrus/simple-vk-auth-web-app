@@ -7,7 +7,7 @@ fetch(URL)
                 let friends = "";
                 data.forEach(friend =>
                 {
-                    friends+="<div><img class='profilePhoto' src="+friend.photo_100+ "alt ='Аватарка'/><p>"
+                    friends+="<div class='friend'><img class='profilePhoto' src="+friend.photo_100+ "alt ='Аватарка'/><p>"
                         +friend.first_name+" "+ friend.last_name+"</p></div>"
                 });
                 document.getElementById('friends').innerHTML = friends;
