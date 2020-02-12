@@ -14,6 +14,7 @@ a {
   align-items: center;
   justify-content: center;
   margin: 5px;
+  flex-wrap: wrap;
 }
 .friends div{
   margin: 10px;
