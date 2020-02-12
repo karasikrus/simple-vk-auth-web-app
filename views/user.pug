@@ -1,14 +1,17 @@
 extends layout
+block scripts
+    script(src='/javascripts/friends.js')
 
 block content
     h2 Ты и твои друзья
     p.userName= user.name
-    img.profilePhoto(src=user.photoURL alt="Аватарка")
+    img.profilePhoto(src=user.photoURL lt="Аватарка")
     p
     p
-    section.friends
-        each friend in user.friends
-            div
-                img.profilePhoto(src=friend.photo_100 alt="Аватарка друга")
-                p= friend.first_name+" "+ friend.last_name
+    section.friends#friends
+        p загружаем друзей...
+
+    form(class="form-signout" method="POST" action="/logout")
+        - var buttonClass = ['btn', 'btn-lg', 'btn-primary', 'btn-block'];
+        button(class=buttonClass type="submit") выйти
 

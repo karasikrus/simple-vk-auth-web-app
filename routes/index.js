@@ -14,6 +14,13 @@ router.post('/auth',
     function (req, res) {
     }
 );
+router.post('/logout',
+    function (req, res) {
+    req.logout();
+    res.redirect('/');
+    }
+);
+
 router.get('/vkcallback',
     passport.authenticate('vkontakte'),
     function (req, res) {
@@ -28,6 +35,15 @@ router.get('/user', ensureAuthenticated,
             res.render('user', {user: req.user});
         });
     });
+router.get('/friends', ensureAuthenticated,
+    function (req, res) {
+    let vkAPIFriendsURL = 'https://api.vk.com/method/friends.get?order=random&count=5&fields=photo_100&access_token=' +
+        req.user.token + '&v=5.103';
+    request(vkAPIFriendsURL, function (error, response, body) {
+        const friends = JSON.parse(body).response.items;
+        res.send(friends);
+    });
+});
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
